@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import mapboxgl from 'mapbox-gl';
+import * as MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+import * as mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -10,6 +11,7 @@ import { environment } from '../../environments/environment';
 export class MapComponent implements AfterViewInit {
 
   @ViewChild('mapNode') mapNodeElementRef: ElementRef;
+  private directions: MapboxDirections;
   private map: mapboxgl.Map;
   private style: string;
   private longitude: number;
@@ -32,6 +34,11 @@ export class MapComponent implements AfterViewInit {
       zoom: this.zoom
     });
 
+    this.directions = new MapboxDirections({
+      accessToken: environment.mapboxPublicToken
+    });
+
+    this.map.addControl(this.directions);
   }
 
 }
